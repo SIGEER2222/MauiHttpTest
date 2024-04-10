@@ -1,0 +1,36 @@
+﻿@page "/"
+<h1>Hello, world!</h1>
+
+<h1>Fetch Data</h1>
+
+<div>
+    <label for="urlInput">URL:</label>
+    <input type="text" id="urlInput" @bind="url" />
+    <button @onclick="FetchData">Fetch</button>
+</div>
+
+@if (data != null)
+{
+    <div>
+        <h2>Response Data</h2>
+        <pre>@data</pre>
+    </div>
+}
+
+@code {
+    private string url = @"http://httpbin.org/get";
+    private string data;
+    HttpClient http = new HttpClient();
+    private async Task FetchData()
+    {
+        try
+        {
+            data = await http.GetStringAsync(url);
+        }
+        catch (Exception ex)
+        {
+            data = $"Error: {ex.Message + Environment.NewLine + ex.StackTrace}";
+        }
+    }
+}
+
